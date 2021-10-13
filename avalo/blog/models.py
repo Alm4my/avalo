@@ -39,9 +39,8 @@ class Post(Model):
         return reverse('blog:post_detail',
                        args=[self.publish.year,
                              self.publish.month,
-                             self.pubhish.day,
+                             self.publish.day,
                              self.slug])
 
     objects = models.Manager()  # default manager
     published = PublishedManager()  # custom manager
-
