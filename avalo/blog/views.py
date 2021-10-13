@@ -46,6 +46,9 @@ def post_detail(request, year, month, day, post):
     new_comment = None
     comment_form = CommentForm()
 
+    # get tags for current post
+    tags = post.tags.all()
+
     if request.method == 'POST':
         # a comment was posted
         comment_form = CommentForm(data=request.POST)
@@ -68,7 +71,8 @@ def post_detail(request, year, month, day, post):
                                                      'comments': comments,
                                                      'new_comment': new_comment,
                                                      'comment_form': comment_form,
-                                                     'similar_posts': similar_posts, })
+                                                     'similar_posts': similar_posts,
+                                                     'tags': tags})
 
 
 def post_list(request, tag_slug=None):
