@@ -14,7 +14,12 @@
     </div>
     <div id="sidebar">
         <h2>Avalo</h2>
-        <p>Number of posts published: <em><b>{% total_posts %}</b></em></p>
+        <p>
+            Number of posts published: <em><b>{% total_posts %}</b></em>
+        </p>
+        <p>
+            <a href="{% url 'blog:post_feed' %}">Subscribe to our RSS feed</a>
+        </p>
         <h3>Latest Posts</h3>
         {% show_latest_post 3 %}
         <h3>Most Commented Posts</h3>
