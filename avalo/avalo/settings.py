@@ -136,3 +136,6 @@ EMAIL_HOST_USER = 'admin'
 EMAIL_HOST_PASSWORD = 'password'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Enable Sitemap XML Generation
+SITE_ID = 1
