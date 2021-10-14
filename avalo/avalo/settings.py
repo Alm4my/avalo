@@ -81,6 +81,7 @@ WSGI_APPLICATION = 'avalo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
         'NAME': 'blog',
         'USER': 'blog',
         'PASSWORD': 'blog',
