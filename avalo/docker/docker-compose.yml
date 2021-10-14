@@ -1,18 +1,17 @@
-version: '2'
+# Use postgres/example user/password credentials
+version: '3.1'
 
 services:
-  postgresql:
-    image: docker.io/bitnami/postgresql:11
+
+  db:
+    image: postgres
     ports:
       - '5432:5432'
-    volumes:
-      - 'postgresql_data:/bitnami/postgresql'
     environment:
-      - 'ALLOW_EMPTY_PASSWORD=yes'
-      - POSTGRESQL_DATABASE=blog
-      - POSTGRESQL_USERNAME=blog
-      - POSTGRESQL_PASSWORD=blog
+      POSTGRES_PASSWORD: postgres
 
-volumes:
-  postgresql_data:
-    driver: local
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
