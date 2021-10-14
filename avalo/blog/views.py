@@ -1,10 +1,11 @@
+from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from taggit.models import Tag
 
-from blog.forms import EmailPostForm, CommentForm
+from blog.forms import EmailPostForm, CommentForm, SearchForm
 from blog.models import Post
 
 
@@ -64,8 +65,8 @@ def post_detail(request, year, month, day, post):
     post_tag_ids = post.tags.values_list('id', flat=True)
     similar_posts = Post.published.filter(tags__in=post_tag_ids)
     similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
-                                 .exclude(id=post.id) \
-                                 .order_by('-same_tags', '-publish')[:4]
+                        .exclude(id=post.id) \
+                        .order_by('-same_tags', '-publish')[:4]
 
     return render(request, 'blog/post/detail.html', {'post': post,
                                                      'comments': comments,
@@ -98,3 +99,20 @@ def post_list(request, tag_slug=None):
     return render(request, 'blog/post/list.html', {'page': page,
                                                    'posts': posts,
                                                    'tag': tag})
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.published.annotate(
+                search=SearchVector('title', 'body')  # search multiple fields with SearchVector
+            ).filter(search=query)
+
+    return render(request, 'blog/post/search.html', {'form': form,
+                                                     'query': query,
+                                                     'results': results})
